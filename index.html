@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Arshdeep Singh — Portfolio</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arshdeep Singh — Portfolio</title>
 
-  <!--
+    <!--
     ╔══════════════════════════════════════════════════════════╗
     ║           ARSHDEEP SINGH — PORTFOLIO WEBSITE            ║
     ║  Stack  : Pure HTML + CSS + Vanilla JS (no frameworks)  ║
@@ -15,11 +15,13 @@
     ╚══════════════════════════════════════════════════════════╝
   -->
 
-  <!-- Google Fonts — Instrument Serif for headings, Geist for body -->
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <!-- Google Fonts — Instrument Serif for headings, Geist for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap"
+      rel="stylesheet" />
 
-  <style>
+    <style>
 
     /* ================================================================
        DESIGN TOKENS  —  EDIT COLORS / FONTS HERE ONLY
@@ -861,248 +863,265 @@
     }
 
   </style>
-</head>
-<body>
+  </head>
+  <body>
 
-  <!-- Custom cursor elements — positioned/animated via JS -->
-  <div id="cursor-ring"></div>
-  <div id="cursor-dot"></div>
+    <!-- Custom cursor elements — positioned/animated via JS -->
+    <div id="cursor-ring"></div>
+    <div id="cursor-dot"></div>
 
-  <!-- ================================================================
+    <!-- ================================================================
        NAVIGATION
        — .nav-logo: your name / initials
        — .nav-links: add or remove <li> items to change sections
        ================================================================ -->
-  <nav>
-    <a href="#hero" class="nav-logo">Arshdeep<span>.</span></a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+    <nav>
+      <a href="#hero" class="nav-logo">Arshdeep<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
 
-  <!-- ================================================================
+    <!-- ================================================================
        HERO SECTION
        — Update: name, typed phrases array in JS, description
        — Hero card: update info rows and card-tag pills
        ================================================================ -->
-  <section id="hero">
-    <div class="hero-warm"></div>
-    <div class="container">
-      <div class="hero-grid">
+    <section id="hero">
+      <div class="hero-warm"></div>
+      <div class="container">
+        <div class="hero-grid">
 
-        <!-- Hero left — text content -->
-        <div>
-          <!-- Status pill — change text if no longer available -->
-          <div class="status-pill">
-            <span class="status-dot"></span>
-            Open to opportunities
+          <!-- Hero left — text content -->
+          <div>
+            <!-- Status pill — change text if no longer available -->
+            <div class="status-pill">
+              <span class="status-dot"></span>
+              If the Vision's Big.I'm In
+            </div>
+
+            <!-- Name — <em> applies italic + amber color -->
+            <h1 class="hero-name">Arshdeep<br><em>Singh.</em></h1>
+
+            <!-- Role with typing animation — phrases defined in JS below -->
+            <p class="hero-role">B.Tech CSE &nbsp;·&nbsp; SBBSU &nbsp;·&nbsp;
+              <span id="typed"></span></p>
+
+            <!-- 2-3 sentence description — keep concise -->
+            <p class="hero-desc">
+              I’m a second-year CS student who enjoys learning by building and
+              exploring new technologies.
+              I’m always curious about how things work, whether it’s software,
+              AI, or system design, and
+              I like challenging myself with new ideas and projects that help me
+              grow as a developer.
+            </p>
+
+            <!-- CTA buttons — update href to real URLs -->
+            <div class="hero-actions">
+              <a href="#projects" class="btn btn-solid">
+                See My Work
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5"><path
+                    d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </a>
+              <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+            </div>
           </div>
 
-          <!-- Name — <em> applies italic + amber color -->
-          <h1 class="hero-name">Arshdeep<br><em>Singh.</em></h1>
-
-          <!-- Role with typing animation — phrases defined in JS below -->
-          <p class="hero-role">B.Tech CSE &nbsp;·&nbsp; SBBSU &nbsp;·&nbsp; <span id="typed"></span></p>
-
-          <!-- 2-3 sentence description — keep concise -->
-          <p class="hero-desc">
-            Second-year CS student at SBBSU building things that go well beyond coursework.
-            I care about intelligent systems, clean architecture, and products that actually
-            matter to people — currently shipping FolioNet and learning Django.
-          </p>
-
-          <!-- CTA buttons — update href to real URLs -->
-          <div class="hero-actions">
-            <a href="#projects" class="btn btn-solid">
-              See My Work
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-            <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+          <!-- Hero right — floating card -->
+          <div class="hero-card-wrap">
+            <div class="hero-card">
+              <!-- Initials avatar — update if name changes -->
+              <div class="card-avatar">AS</div>
+              <div class="card-name">Arshdeep Singh</div>
+              <div class="card-role-sub">B.Tech CSE · AI & ML</div>
+              <div class="card-sep"></div>
+              <!-- Info rows — add/remove .card-row divs as needed -->
+              <div class="card-row">
+                <span class="card-row-l">University</span>
+                <span class="card-row-v">SBBSU</span>
+              </div>
+              <div class="card-row">
+                <span class="card-row-l">Year</span>
+                <span class="card-row-v">2nd Year</span>
+              </div>
+              <div class="card-row">
+                <span class="card-row-l">Spec.</span>
+                <span class="card-row-v">AI & ML</span>
+              </div>
+              <div class="card-row">
+                <span class="card-row-l">Status</span>
+                <span class="card-row-v" style="color: #5a9a6a;">Building
+                  FolioNet</span>
+              </div>
+              <!-- Skill tags — add/remove .card-tag spans -->
+              <div class="card-tags">
+                <span class="card-tag">Python</span>
+                <span class="card-tag">JS</span>
+                <span class="card-tag">C++</span>
+                <span class="card-tag">MongoDB</span>
+                <span class="card-tag">Django</span>
+              </div>
+            </div>
           </div>
+
         </div>
-
-        <!-- Hero right — floating card -->
-        <div class="hero-card-wrap">
-          <div class="hero-card">
-            <!-- Initials avatar — update if name changes -->
-            <div class="card-avatar">AS</div>
-            <div class="card-name">Arshdeep Singh</div>
-            <div class="card-role-sub">B.Tech CSE · AI & ML</div>
-            <div class="card-sep"></div>
-            <!-- Info rows — add/remove .card-row divs as needed -->
-            <div class="card-row">
-              <span class="card-row-l">University</span>
-              <span class="card-row-v">SBBSU</span>
-            </div>
-            <div class="card-row">
-              <span class="card-row-l">Year</span>
-              <span class="card-row-v">2nd Year</span>
-            </div>
-            <div class="card-row">
-              <span class="card-row-l">Spec.</span>
-              <span class="card-row-v">AI & ML</span>
-            </div>
-            <div class="card-row">
-              <span class="card-row-l">Status</span>
-              <span class="card-row-v" style="color: #5a9a6a;">Building FolioNet</span>
-            </div>
-            <!-- Skill tags — add/remove .card-tag spans -->
-            <div class="card-tags">
-              <span class="card-tag">Python</span>
-              <span class="card-tag">JS</span>
-              <span class="card-tag">C++</span>
-              <span class="card-tag">MongoDB</span>
-              <span class="card-tag">Django</span>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ================================================================
+    <!-- ================================================================
        ABOUT SECTION
        — Update the 3 paragraphs with your own words
        — Update stat numbers in .stat-num spans
        ================================================================ -->
-  <section id="about">
-    <div class="container">
-      <div class="about-grid">
+    <section id="about">
+      <div class="container">
+        <div class="about-grid">
 
-        <!-- Story — keep it honest and personal -->
-        <div class="about-text reveal" style="--delay: 0s;">
-          <span class="eyebrow">Who I Am</span>
-          <h2 class="h-main">I build things<br>that solve real problems.</h2>
+          <!-- Story — keep it honest and personal -->
+          <div class="about-text reveal" style="--delay: 0s;">
+            <span class="eyebrow">Who I Am</span>
+            <h2 class="h-main">I build things<br>that solve real problems.</h2>
 
-          <p>
-            I'm <strong>Arshdeep Singh</strong>, a second-year Computer Science student at
-            Sant Baba Bhag Singh University, specializing in
-            <span class="hi">Artificial Intelligence and Machine Learning</span>.
-            My foundation is solid — C, C++, data structures, algorithms — and I've built
-            outward from there into full-stack development and AI-integrated products.
-          </p>
-          <p>
-            My real-time chat app with <strong>Socket.io</strong> was born from wanting to
-            understand how live systems actually work under the hood. <span class="hi">FolioNet</span>
-            came from a frustration — there was no good place for developers to showcase work,
-            find collaborators, and grow together meaningfully.
-          </p>
-          <p>
-            Currently learning <strong>Django</strong> while pushing AI integrations in FolioNet.
-            I like working where systems thinking meets user-facing product design —
-            that intersection is where the interesting problems live.
-          </p>
+            <p>
+              I'm <strong>Arshdeep Singh</strong>, a second-year Computer
+              Science student at
+              Sant Baba Bhag Singh University, specializing in
+              <span class="hi">Artificial Intelligence and Machine
+                Learning</span>.
+              My foundation is solid — C, C++, data structures, algorithms — and
+              I've built
+              outward from there into full-stack development and AI-integrated
+              products.
+            </p>
+            <p>
+              My real-time chat app with <strong>Socket.io</strong> was born
+              from wanting to
+              understand how live systems actually work under the hood. <span
+                class="hi">FolioNet</span>
+              came from a frustration — there was no good place for developers
+              to showcase work,
+              find collaborators, and grow together meaningfully.
+            </p>
+            <p>
+              Currently learning <strong>Django</strong> while pushing AI
+              integrations in FolioNet.
+              I like working where systems thinking meets user-facing product
+              design —
+              that intersection is where the interesting problems live.
+            </p>
+          </div>
+
+          <!-- Stats — update numbers/labels freely -->
+          <div class="about-stats reveal" style="--delay: 0.14s;">
+            <div class="stat-cell">
+              <div class="stat-num">2+</div>
+              <div class="stat-lbl">Years Coding</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-num">7+</div>
+              <div class="stat-lbl">Technologies</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-num">2</div>
+              <div class="stat-lbl">Major Projects</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-num">∞</div>
+              <div class="stat-lbl">Still Learning</div>
+            </div>
+          </div>
+
         </div>
-
-        <!-- Stats — update numbers/labels freely -->
-        <div class="about-stats reveal" style="--delay: 0.14s;">
-          <div class="stat-cell">
-            <div class="stat-num">2+</div>
-            <div class="stat-lbl">Years Coding</div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-num">7+</div>
-            <div class="stat-lbl">Technologies</div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-num">2</div>
-            <div class="stat-lbl">Major Projects</div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-num">∞</div>
-            <div class="stat-lbl">Still Learning</div>
-          </div>
-        </div>
-
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ================================================================
+    <!-- ================================================================
        SKILLS SECTION
        — Copy a .skill-card block to add a new skill
        — Set --pct: XX%  for how full the progress bar is
        — Set --d: Xs     for stagger delay (increment by 0.05s)
        — Add <span class="badge-learning"> for "Learning" tag
        ================================================================ -->
-  <section id="skills">
-    <div class="container">
+    <section id="skills">
+      <div class="container">
 
-      <div class="skills-top">
-        <div class="reveal" style="--delay: 0s;">
-          <span class="eyebrow">What I Use</span>
-          <h2 class="h-main">Skills &amp;<br>Technologies</h2>
-        </div>
-        <p class="sub-text reveal" style="--delay: 0.1s;">
-          From systems-level thinking in C/C++ to modern full-stack JavaScript —
-          with Python and AI threading through everything I build.
-        </p>
-      </div>
-
-      <div class="skills-grid">
-
-        <!-- Python -->
-        <div class="skill-card" style="--pct: 88%; --d: 0s;">
-          <span class="skill-icon">🐍</span>
-          <div class="skill-name">Python</div>
-          <div class="skill-level">Proficient</div>
-          <div class="skill-bar"><div class="skill-fill"></div></div>
+        <div class="skills-top">
+          <div class="reveal" style="--delay: 0s;">
+            <span class="eyebrow">What I Use</span>
+            <h2 class="h-main">Skills &amp;<br>Technologies</h2>
+          </div>
+          <p class="sub-text reveal" style="--delay: 0.1s;">
+            From systems-level thinking in C/C++ to modern full-stack JavaScript
+            —
+            with Python and AI threading through everything I build.
+          </p>
         </div>
 
-        <!-- C -->
-        <div class="skill-card" style="--pct: 83%; --d: 0.05s;">
-          <span class="skill-icon">⚙️</span>
-          <div class="skill-name">C</div>
-          <div class="skill-level">Proficient</div>
-          <div class="skill-bar"><div class="skill-fill"></div></div>
-        </div>
+        <div class="skills-grid">
 
-        <!-- C++ -->
-        <div class="skill-card" style="--pct: 80%; --d: 0.1s;">
-          <span class="skill-icon">🔩</span>
-          <div class="skill-name">C++</div>
-          <div class="skill-level">Proficient</div>
-          <div class="skill-bar"><div class="skill-fill"></div></div>
-        </div>
+          <!-- Python -->
+          <div class="skill-card" style="--pct: 88%; --d: 0s;">
+            <span class="skill-icon">🐍</span>
+            <div class="skill-name">Python</div>
+            <div class="skill-level">Proficient</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
 
-        <!-- JavaScript -->
-        <div class="skill-card" style="--pct: 78%; --d: 0.15s;">
-          <span class="skill-icon">𝙅𝙎</span>
-          <div class="skill-name">JavaScript</div>
-          <div class="skill-level">Proficient</div>
-          <div class="skill-bar"><div class="skill-fill"></div></div>
-        </div>
+          <!-- C -->
+          <div class="skill-card" style="--pct: 83%; --d: 0.05s;">
+            <span class="skill-icon">⚙️</span>
+            <div class="skill-name">C</div>
+            <div class="skill-level">Proficient</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
 
-        <!-- SQL / DBMS -->
-        <div class="skill-card" style="--pct: 74%; --d: 0.2s;">
-          <span class="skill-icon">🗄️</span>
-          <div class="skill-name">SQL / DBMS</div>
-          <div class="skill-level">Intermediate</div>
-          <div class="skill-bar"><div class="skill-fill"></div></div>
-        </div>
+          <!-- C++ -->
+          <div class="skill-card" style="--pct: 80%; --d: 0.1s;">
+            <span class="skill-icon">🔩</span>
+            <div class="skill-name">C++</div>
+            <div class="skill-level">Proficient</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
 
-        <!-- MongoDB -->
-        <div class="skill-card" style="--pct: 70%; --d: 0.25s;">
-          <span class="skill-icon">🍃</span>
-          <div class="skill-name">MongoDB</div>
-          <div class="skill-level">Intermediate</div>
-          <div class="skill-bar"><div class="skill-fill"></div></div>
-        </div>
+          <!-- JavaScript -->
+          <div class="skill-card" style="--pct: 78%; --d: 0.15s;">
+            <span class="skill-icon">𝙅𝙎</span>
+            <div class="skill-name">JavaScript</div>
+            <div class="skill-level">Proficient</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
 
-        <!-- Django — currently learning, shows badge -->
-        <div class="skill-card" style="--pct: 42%; --d: 0.3s;">
-          <span class="badge-learning">Learning</span>
-          <span class="skill-icon">🎯</span>
-          <div class="skill-name">Django</div>
-          <div class="skill-level">In Progress</div>
-          <div class="skill-bar"><div class="skill-fill"></div></div>
-        </div>
+          <!-- SQL / DBMS -->
+          <div class="skill-card" style="--pct: 74%; --d: 0.2s;">
+            <span class="skill-icon">🗄️</span>
+            <div class="skill-name">SQL / DBMS</div>
+            <div class="skill-level">Intermediate</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
 
-        <!--
+          <!-- MongoDB -->
+          <div class="skill-card" style="--pct: 70%; --d: 0.25s;">
+            <span class="skill-icon">🍃</span>
+            <div class="skill-name">MongoDB</div>
+            <div class="skill-level">Intermediate</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+
+          <!-- Django — currently learning, shows badge -->
+          <div class="skill-card" style="--pct: 42%; --d: 0.3s;">
+            <span class="badge-learning">Learning</span>
+            <span class="skill-icon">🎯</span>
+            <div class="skill-name">Django</div>
+            <div class="skill-level">In Progress</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+
+          <!--
           TO ADD A NEW SKILL — copy this block and fill in:
           <div class="skill-card" style="- -pct: 65%; - -d: 0.35s;">
             <span class="skill-icon">🔥</span>
@@ -1112,101 +1131,121 @@
           </div>
         -->
 
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ================================================================
+    <!-- ================================================================
        PROJECTS SECTION
        — Each project = one .project-row inside .projects-list
        — Update: project-name, project-desc, project-tag spans
        — Update: project-badge text, onclick URL
        — Adjust --d for stagger timing (0s, 0.07s, 0.14s, ...)
        ================================================================ -->
-  <section id="projects">
-    <div class="container">
+    <section id="projects">
+      <div class="container">
 
-      <div class="projects-header reveal" style="--delay: 0s;">
-        <span class="eyebrow">What I've Built</span>
-        <h2 class="h-main">Projects</h2>
-        <p class="sub-text">Real problems, real solutions — not just coursework demos.</p>
-      </div>
+        <div class="projects-header reveal" style="--delay: 0s;">
+          <span class="eyebrow">What I've Built</span>
+          <h2 class="h-main">Projects</h2>
+          <p class="sub-text">Real problems, real solutions — not just
+            coursework demos.</p>
+        </div>
 
-      <div class="projects-list">
+        <div class="projects-list">
 
-        <!-- PROJECT 1: FolioNet -->
-        <!-- onclick="window.open('YOUR_GITHUB_URL', '_blank')" -->
-        <div class="project-row" style="--d: 0.05s;" onclick="alert('Sorry!!...Working on it')">
-          <div class="project-index">01</div>
+          <!-- PROJECT 1: FolioNet -->
+          <!-- onclick="window.open('YOUR_GITHUB_URL', '_blank')" -->
+          <div class="project-row" style="--d: 0.05s;"
+            onclick="alert('Sorry!!...Working on it')">
+            <div class="project-index">01</div>
 
-          <div class="project-main">
-            <div class="project-name">FolioNet</div>
-            <p class="project-desc">
-              An AI-powered social platform where developers upload their portfolios, receive
-              AI-analyzed badges and rank scores based on their actual work, and get matched
-              with people sharing similar skills for collaboration. Job wins are celebrated on
-              the public feed, building a community of motivated builders who push each other forward.
-            </p>
-            <!-- Add/remove .project-tag spans to update the stack -->
-            <div class="project-tags">
-              <span class="project-tag">AI / ML</span>
-              <span class="project-tag">Python</span>
-              <span class="project-tag">MongoDB</span>
-              <span class="project-tag">Skill Matching</span>
-              <span class="project-tag">Badge System</span>
-              <span class="project-tag">Social Feed</span>
+            <div class="project-main">
+              <div class="project-name">FolioNet</div>
+              <p class="project-desc">
+                I realized that a lot of developers build amazing things, but
+                most of those projects never reach real users. Not because the
+                product is bad — people simply don’t know they exist. I’ve faced
+                this myself while building apps and experimenting with different
+                ideas.
+
+                That’s why I’m building FolioNet — a platform where developers
+                can showcase the tools, apps, and services they create, and let
+                other people actually discover and use them. The goal is to help
+                builders get visibility, connect with users, and turn side
+                projects into something real instead of letting them stay hidden
+                inside GitHub folders or local servers.
+              </p>
+              <!-- Add/remove .project-tag spans to update the stack -->
+              <div class="project-tags">
+                <span class="project-tag">AI / ML</span>
+                <span class="project-tag">Python</span>
+                <span class="project-tag">MongoDB</span>
+                <span class="project-tag">Skill Matching</span>
+                <span class="project-tag">Badge System</span>
+                <span class="project-tag">Social Feed</span>
+              </div>
+            </div>
+
+            <div class="project-meta">
+              <span class="project-badge">★ Main Project ( working on it )</span>
+              <svg class="project-arrow" width="18" height="18"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </div>
           </div>
 
-          <div class="project-meta">
-            <span class="project-badge">★ Main Project</span>
-            <svg class="project-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </div>
-        </div>
+          <!-- PROJECT 2: Real-Time Chat App -->
+          <div class="project-row" style="--d: 0.12s;"
+            onclick="window.open('https://chat-room-1-pkfo.onrender.com/', '_blank')">
+            <div class="project-index">02</div>
 
-        <!-- PROJECT 2: Real-Time Chat App -->
-        <div class="project-row" style="--d: 0.12s;" onclick="window.open('https://chat-room-1-pkfo.onrender.com/', '_blank')">
-          <div class="project-index">02</div>
+            <div class="project-main">
+              <div class="project-name">Real-Time Chat App</div>
+              <p class="project-desc">
+                A fully functional full-stack web chatting application built
+                with Socket.io.
+                Supports live messaging, photos-sharing, chat rooms, and real-time user
+                presence. Built entirely
+                from scratch — frontend to backend — as a hands-on dive into
+                event-driven architecture.
+              </p>
+              <div class="project-tags">
+                <span class="project-tag">Socket.io</span>
+                <span class="project-tag">Node.js</span>
+                <span class="project-tag">JavaScript</span>
+                <span class="project-tag">HTML / CSS</span>
+                <span class="project-tag">Real-Time</span>
+              </div>
+            </div>
 
-          <div class="project-main">
-            <div class="project-name">Real-Time Chat App</div>
-            <p class="project-desc">
-              A fully functional full-stack web chatting application built with Socket.io.
-              Supports live messaging, chat rooms, and real-time user presence. Built entirely
-              from scratch — frontend to backend — as a hands-on dive into event-driven architecture.
-            </p>
-            <div class="project-tags">
-              <span class="project-tag">Socket.io</span>
-              <span class="project-tag">Node.js</span>
-              <span class="project-tag">JavaScript</span>
-              <span class="project-tag">HTML / CSS</span>
-              <span class="project-tag">Real-Time</span>
+            <div class="project-meta">
+              <span class="project-badge">Full Stack</span>
+              <svg class="project-arrow" width="18" height="18"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </div>
           </div>
 
-          <div class="project-meta">
-            <span class="project-badge">Full Stack</span>
-            <svg class="project-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <!-- Placeholder row — remove/replace when next project is ready -->
+          <div class="project-row"
+            style="--d: 0.19s; opacity: 0.35 !important; pointer-events: none;">
+            <div class="project-index">03</div>
+            <div class="project-main">
+              <div class="project-name" style="color: var(--text-3);">Something
+                new is loading...</div>
+              <p class="project-desc">Next project in progress.</p>
+            </div>
+            <div class="project-meta">
+              <span class="project-badge" style="opacity:0.4;">Soon</span>
+            </div>
           </div>
-        </div>
 
-        <!-- Placeholder row — remove/replace when next project is ready -->
-        <div class="project-row" style="--d: 0.19s; opacity: 0.35 !important; pointer-events: none;">
-          <div class="project-index">03</div>
-          <div class="project-main">
-            <div class="project-name" style="color: var(--text-3);">Something new is loading...</div>
-            <p class="project-desc">Next project in progress.</p>
-          </div>
-          <div class="project-meta">
-            <span class="project-badge" style="opacity:0.4;">Soon</span>
-          </div>
         </div>
-
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ================================================================
+    <!-- ================================================================
        CONTACT SECTION
        — Update all href attributes with real email / social URLs
        — To make the form send real emails:
@@ -1214,92 +1253,124 @@
            Option B: Use EmailJS  — emailjs.com  (free tier)
            Wire up the "Send" button click in the JS section below
        ================================================================ -->
-  <section id="contact">
-    <div class="container">
-      <div class="contact-grid">
+    <section id="contact">
+      <div class="container">
+        <div class="contact-grid">
 
-        <!-- Left: description + links -->
-        <div class="reveal" style="--delay: 0s;">
-          <span class="eyebrow">Let's Talk</span>
-          <h2 class="h-main">Get In Touch</h2>
-          <p class="contact-desc">
-            Whether it's a collaboration idea, an opportunity, or just a conversation
-            about what you're building — feel free to reach out.
-            I'm usually quick to respond.
-          </p>
+          <!-- Left: description + links -->
+          <div class="reveal" style="--delay: 0s;">
+            <span class="eyebrow">Let's Talk</span>
+            <h2 class="h-main">Get In Touch</h2>
+            <p class="contact-desc">
+              Whether it's a collaboration idea, an opportunity, or just a
+              conversation
+              about what you're building — feel free to reach out.
+              I'm usually quick to respond.
+            </p>
 
-          <div class="contact-links">
+            <div class="contact-links">
 
-            <!-- Update href="mailto:YOUR_REAL_EMAIL" -->
-            <a href="mailto:arshdeep@email.com" class="contact-link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                <polyline points="22,6 12,13 2,6"/>
+              <!-- Update href="mailto:YOUR_REAL_EMAIL" -->
+              <a href="mailto:arshdeep@email.com" class="contact-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.5">
+                  <path
+                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                badhanarsh2008@gmail.com
+              </a>
+
+              <!-- Update href to your real GitHub profile URL -->
+              <a href="https://github.com/" target="_blank"
+                class="contact-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.5">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+                github.com/badhanarsh2008-cmyk
+              </a>
+
+              <!-- Update href to your LinkedIn profile URL -->
+              <a href="https://linkedin.com/" target="_blank"
+                class="contact-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.5">
+                  <path
+                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+                linkedin.com/in/arshdeepsingh
+              </a>
+
+            </div>
+          </div>
+
+          <!-- Right: contact form -->
+          <div class="contact-form reveal" style="--delay: 0.12s;">
+
+            <div class="field">
+              <label>Your Name</label>
+              <input id="name" type="text" placeholder="e.g. Priya Sharma" required />
+            </div>
+
+            <div class="field">
+              <label>Email Address</label>
+              <input id="email" type="email" placeholder="you@example.com" required/>
+            </div>
+
+            <div class="field">
+              <label>Message</label>
+              <textarea id="message" rows="5"
+                placeholder="What's on your mind?"></textarea>
+            </div>
+
+            <!-- Wire this button to Formspree or EmailJS for real email sending -->
+            <button onclick="send()" class="btn btn-solid"
+              style="width:100%; justify-content:center; font-size:0.86rem;">
+              Send Message
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5">
+                <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" />
               </svg>
-              badhanarsh2008@gmail.com
-            </a>
-
-            <!-- Update href to your real GitHub profile URL -->
-            <a href="https://github.com/" target="_blank" class="contact-link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-              </svg>
-              github.com/badhanarsh2008-cmyk
-            </a>
-
-            <!-- Update href to your LinkedIn profile URL -->
-            <a href="https://linkedin.com/" target="_blank" class="contact-link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                <rect x="2" y="9" width="4" height="12"/>
-                <circle cx="4" cy="4" r="2"/>
-              </svg>
-              linkedin.com/in/arshdeepsingh
-            </a>
+            </button>
 
           </div>
-        </div>
-
-        <!-- Right: contact form -->
-        <div class="contact-form reveal" style="--delay: 0.12s;">
-
-          <div class="field">
-            <label>Your Name</label>
-            <input type="text" placeholder="e.g. Priya Sharma" />
-          </div>
-
-          <div class="field">
-            <label>Email Address</label>
-            <input type="email" placeholder="you@example.com" />
-          </div>
-
-          <div class="field">
-            <label>Message</label>
-            <textarea rows="5" placeholder="What's on your mind?"></textarea>
-          </div>
-
-          <!-- Wire this button to Formspree or EmailJS for real email sending -->
-          <button class="btn btn-solid" style="width:100%; justify-content:center; font-size:0.86rem;">
-            Send Message
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
-            </svg>
-          </button>
-
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Update year in footer if needed -->
-  <footer>
-    <p>Built by <em>Arshdeep Singh</em> &nbsp;·&nbsp; B.Tech CSE &nbsp;·&nbsp; SBBSU &nbsp;·&nbsp; 2026</p>
-  </footer>
+    <!-- Update year in footer if needed -->
+    <footer>
+      <p>Built by <em>Arshdeep Singh</em> &nbsp;·&nbsp; B.Tech CSE &nbsp;·&nbsp;
+        SBBSU &nbsp;·&nbsp; 2026</p>
+    </footer>
 
-  <!-- ================================================================
+    <!-- ================================================================
        JAVASCRIPT
        ================================================================ -->
-  <script>
+    <script>
+    function send(){
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      const phone = 6284066113;
+
+      messege = `Name : ${name},
+      Email : ${email},
+      Messege : ${message}`
+
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(messege)}`;
+
+    window.open(url, "_blank");
+    alert("Messege sent!!!!")
+    };
+
+
 
     /* ────────────────────────────────────────────
        1. TYPED TEXT ANIMATION
@@ -1430,5 +1501,5 @@
 
   </script>
 
-</body>
+  </body>
 </html>
