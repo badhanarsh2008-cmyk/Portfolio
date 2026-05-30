@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Arshdeep — Minecraft Portfolio</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+        <style>
+
+:root{
+    --bg:#07110c;
+    --surface:#101d15;
+    --surface2:#17251d;
+    --green:#78ff91;
+    --green2:#3fd466;
+    --text:#ecfff0;
+    --muted:#9db2a0;
+    --border:#294233;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--bg);
+    color:white;
+    overflow-x:hidden;
+    font-family:'Inter',sans-serif;
+}
+
+canvas{
+    position:fixed;
+    inset:0;
+    z-index:-3;
+}
+
+/* animated fog */
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at 20% 20%, rgba(84,255,120,0.08), transparent 30%),
+    radial-gradient(circle at 80% 40%, rgba(50,255,120,0.06), transparent 30%),
+    radial-gradient(circle at 50% 80%, rgba(80,255,180,0.08), transparent 35%);
+    animation:fog 14s ease-in-out infinite alternate;
+    z-index:-2;
+}
+
+@keyframes fog{
+    from{transform:translateY(0px) scale(1);}
+    to{transform:translateY(-20px) scale(1.1);}
+}
+
+/* pixel stars */
+.stars{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    overflow:hidden;
+}
+
+.star{
+    position:absolute;
+    width:3px;
+    height:3px;
+    background:white;
+    animation:twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle{
+    0%,100%{opacity:0.2;}
+    50%{opacity:1;}
+}
+
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    padding:1.2rem 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:100;
+    backdrop-filter:blur(12px);
+    background:rgba(8,15,10,0.55);
+    border-bottom:2px solid var(--border);
+}
+
+.logo{
+    font-family:'Press Start 2P',cursive;
+    font-size:0.7rem;
+    color:var(--green);
+    text-shadow:0 0 10px rgba(120,255,145,0.8);
+}
+
+nav ul{
+    display:flex;
+    gap:2rem;
+    list-style:none;
+}
+
+nav a{
+    text-decoration:none;
+    color:var(--muted);
+    font-size:0.9rem;
+    transition:0.3s;
+}
+
+nav a:hover{
+    color:var(--green);
+    text-shadow:0 0 12px var(--green);
+}
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.voxel-grid{
+    position:absolute;
+    inset:0;
+    background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size:40px 40px;
+    transform:perspective(900px) rotateX(70deg) scale(2);
+    opacity:0.15;
+}
+
+.hero-content{
+    z-index:2;
+}
+
+.hero h1{
+    font-family:'Press Start 2P',cursive;
+    font-size:clamp(2rem,6vw,5rem);
+    line-height:1.4;
+    color:white;
+    text-shadow:
+    0 0 12px rgba(120,255,145,0.8),
+    0 0 30px rgba(120,255,145,0.5);
+    margin-bottom:2rem;
+}
+
+.hero h1 span{
+    color:var(--green);
+}
+
+.hero p{
+    max-width:750px;
+    margin:auto;
+    color:var(--muted);
+    line-height:1.9;
+    font-size:1.1rem;
+}
+
+.hero-buttons{
+    margin-top:3rem;
+    display:flex;
+    gap:1rem;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:1rem 2rem;
+    border:none;
+    background:linear-gradient(180deg,#59ff8e,#2fb858);
+    color:black;
+    font-weight:800;
+    cursor:pointer;
+    transition:0.3s;
+    clip-path:polygon(0 0,95% 0,100% 15%,100% 100%,5% 100%,0 85%);
+    box-shadow:0 0 20px rgba(120,255,145,0.35);
+}
+
+.btn:hover{
+    transform:translateY(-6px) scale(1.04);
+    box-shadow:0 0 35px rgba(120,255,145,0.65);
+}
+
+section{
+    padding:8rem 8%;
+    position:relative;
+    
+}
+
+.section-title{
+    font-family:'Press Start 2P',cursive;
+    color:var(--green);
+    margin-bottom:4rem;
+    font-size:1.2rem;
+    text-shadow:0 0 12px rgba(120,255,145,0.7);
+}
+
+.about-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:3rem;
+}
+
+.mc-card{
+    background:rgba(16,29,21,0.8);
+    border:2px solid var(--border);
+    padding:2rem;
+    position:relative;
+    overflow:hidden;
+    transition:0.4s;
+}
+
+.mc-card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(45deg, transparent, rgba(120,255,145,0.08), transparent);
+    transform:translateX(-100%);
+}
+
+.mc-card:hover::before{
+    transform:translateX(100%);
+    transition:1s;
+}
+
+.mc-card:hover{
+    transform:translateY(-10px);
+    border-color:var(--green);
+    box-shadow:0 0 30px rgba(120,255,145,0.25);
+}
+
+.mc-card h3{
+    margin-bottom:1rem;
+    color:var(--green);
+}
+
+.mc-card p{
+    line-height:1.8;
+    color:var(--muted);
+}
+
+.skills-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:2rem;
+}
+
+.skill-box{
+    background:var(--surface);
+    border:2px solid var(--border);
+    padding:2rem;
+    text-align:center;
+    transition:0.35s;
+    position:relative;
+    font-family:'Press Start 2P',cursive;
+    font-size: 10px;
+}
+
+.skill-box:hover{
+    transform:translateY(-12px) rotate(-1deg);
+    background:var(--surface2);
+    box-shadow:0 0 30px rgba(120,255,145,0.25);
+}
+
+.skill-icon{
+    font-size:3rem;
+    margin-bottom:1rem;
+}
+
+.skill-box h3{
+    margin-bottom:1rem;
+}
+/* ── XP Bar Track ── */
+.xp-bar {
+    width: 100%;
+    height: 18px;
+    background: #000000;
+    border: none;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ── Base fill styles (shared) ── */
+.xp-fill,
+.xp-fillJ,
+.xp-fillAI,
+.xp-fillM,
+.xp-fillML {
+    height: 100%;
+    background: #80FF20;
+    position: relative;
+    overflow: hidden;
+}
+
+/* top highlight */
+.xp-fill::before,
+.xp-fillJ::before,
+.xp-fillAI::before,
+.xp-fillM::before,
+.xp-fillML::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: #C0FF60;
+}
+
+/* bottom shadow */
+.xp-fill::after,
+.xp-fillJ::after,
+.xp-fillAI::after,
+.xp-fillM::after,
+.xp-fillML::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: #3aa000;
+}
+
+/* ── Individual widths ── */
+.xp-fill   { animation: xp    3s ease-in-out infinite alternate; }
+.xp-fillJ  { animation: xpJ   3s ease-in-out infinite alternate; }
+.xp-fillAI { animation: xpAI  2s ease-in-out infinite alternate; }
+.xp-fillM  { animation: xpM   3s ease-in-out infinite alternate; }
+.xp-fillML { animation: xpML  3s ease-in-out infinite alternate; }
+
+@keyframes xp   { from { width: 88%; } to { width: 92%; } }
+@keyframes xpJ  { from { width: 60%; } to { width: 65%; } }
+@keyframes xpAI { from { width: 52%; } to { width: 57%; } }
+@keyframes xpM  { from { width: 63%; } to { width: 68%; } }
+@keyframes xpML { from { width: 78%; } to { width: 83%; } }
+
+/* ── Scan shimmer (add <span class="xp-scan"></span> inside each fill div) ── */
+.xp-scan {
+    position: absolute;
+    inset: 0;
+    width: 15%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.22),
+        transparent
+    );
+    animation: xpScan 2s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes xpScan {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(600%); }
+}
+
+
+
+.projects{
+    display:grid;
+    gap:2rem;
+}
+
+.project-card{
+    background:linear-gradient(135deg,#0f1b13,#17251d);
+    border:2px solid var(--border);
+    padding:2.5rem;
+    position:relative;
+    overflow:hidden;
+    transition:0.4s;
+}
+
+.project-card:hover{
+    transform:scale(1.02);
+    border-color:var(--green);
+}
+
+.project-card::after{
+    content:'';
+    position:absolute;
+    width:250px;
+    height:250px;
+    border-radius:50%;
+    background:rgba(120,255,145,0.08);
+    top:-100px;
+    right:-100px;
+}
+
+.project-card h3{
+    font-size:2rem;
+    margin-bottom:1rem;
+    color:var(--green);
+}
+
+.project-card p{
+    color:var(--muted);
+    line-height:1.8;
+}
+
+.tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.8rem;
+    margin-top:1.5rem;
+}
+
+.tag{
+    background:#112217;
+    color:#74ff98;
+    border:1px solid #294233;
+    padding:0.5rem 1rem;
+    font-size:0.8rem;
+}
+
+.project-btn{
+    background:#112217;
+    width: 70px;
+    height: 40px;
+    border-radius: 11px;
+    color:#74ff98;
+    border:2px solid var(--border);
+    padding:0.5rem 1rem;
+    font-size:0.8rem;
+    cursor: pointer;
+    margin-left: 900px;
+    transition: all 1s ease;
+}
+
+.project-btn:hover{
+    background-color: #74ff98;
+    color: #112217;
+    font-weight: bolder;
+}
+
+.contact-box{
+    max-width:700px;
+    margin:auto;
+    background:rgba(16,29,21,0.8);
+    border:2px solid var(--border);
+    padding:3rem;
+}
+
+input,textarea{
+    width:100%;
+    margin-top:1rem;
+    margin-bottom:2rem;
+    padding:1rem;
+    background:#0d1710;
+    border:2px solid var(--border);
+    color:white;
+    outline:none;
+}
+
+input:focus,textarea:focus{
+    border-color:var(--green);
+    box-shadow:0 0 20px rgba(120,255,145,0.2);
+}
+
+footer{
+    text-align:center;
+    padding:2rem;
+    border-top:2px solid var(--border);
+    color:var(--muted);
+}
+
+.floating-cube{
+    position:absolute;
+    width:70px;
+    height:70px;
+    background:linear-gradient(135deg,#4cff83,#173822);
+    opacity:0.12;
+    animation:float 10s infinite ease-in-out;
+}
+
+@keyframes float{
+    0%,100%{
+        transform:translateY(0px) rotate(0deg);
+    }
+    50%{
+        transform:translateY(-40px) rotate(180deg);
+    }
+}
+
+.c1{top:15%;left:8%;}
+.c2{top:55%;right:10%;animation-delay:2s;}
+.c3{bottom:10%;left:20%;animation-delay:4s;}
+
+@media(max-width:900px){
+
+.about-grid{
+    grid-template-columns:1fr;
+}
+
+.hero h1{
+    line-height:1.6;
+}
+
+nav ul{
+    display:none;
+}
+
+section{
+    padding:6rem 6%;
+}
+
+}
+
+</style>
+    </head>
+    <body>
+
+        <div class="stars"></div>
+
+        <div class="floating-cube c1"></div>
+        <div class="floating-cube c2"></div>
+        <div class="floating-cube c3"></div>
+
+        <nav>
+            <div class="logo">ARSH.EXE</div>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <section class="hero">
+            <div class="voxel-grid"></div>
+
+            <div class="hero-content">
+                <h1>
+                    BUILDING <span>BLOCK BY BLOCK</span>
+                </h1>
+
+                <p>
+                    AI & ML developer creating full-stack systems, cinematic
+                    interfaces,
+                    and real-world software products with Minecraft-inspired
+                    immersive design.
+                </p>
+
+                <div class="hero-buttons">
+                    <button class="btn">ENTER WORLD</button>
+                    <button class="btn">VIEW PROJECTS</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2 class="section-title">ABOUT PLAYER</h2>
+
+            <div class="about-grid">
+
+                <div class="mc-card reveal">
+                    <h3>Who Am I?</h3>
+                    <p>
+                        I'm Arshdeep Singh — a BTech CSE student at SBBSU. I like turning ideas into real projects, 
+                        currently diving deep into RAG Pipelines and LLM Fine-Tuning. 
+                        Always up for interesting problems and internship opportunities.
+                    </p>
+                </div>
+
+                <div class="mc-card reveal">
+                    <h3>Current Mission</h3>
+                    <p>
+                        Currently building FolioNet — a social collaboration
+                        platform where developers can showcase projects, connect
+                        with other builders, and grow using AI-powered systems.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2 class="section-title">INVENTORY</h2>
+
+            <div class="skills-grid">
+
+                <div class="skill-box reveal">
+                    <div class="skill-icon"></div>
+                    <h3>Python</h3>
+                    <div class="xp-bar"><div class="xp-fill">  </div></div>
+                </div>
+
+                <div class="skill-box reveal">
+                    <div class="skill-icon"></div>
+                    <h3>JavaScript</h3>
+                    <div class="xp-bar"><div class="xp-fillJ">  </div></div>
+                </div>
+
+                <div class="skill-box reveal">
+                    <div class="skill-icon"></div>
+                    <h3>AI</h3>
+                    <div class="xp-bar"><div class="xp-fillAI">  </div></div>
+                </div>
+
+                <div class="skill-box reveal">
+                    <div class="skill-icon"></div>
+                    <h3>MongoDB</h3>
+                    <div class="xp-bar"><div class="xp-fillM"></div></div>
+                </div>
+
+                <div class="skill-box reveal">
+                    <div class="skill-icon"></div>
+                    <h3>ML</h3>
+                    <div class="xp-bar"><div class="xp-fillML"></div></div>
+                </div>
+
+                <div class="skill-box reveal">
+                    <div class="skill-icon"></div>
+                    <h3>SQL</h3>
+                    <div class="xp-bar"><div class="xp-fill"><span class="xp-scan"></span></div></div>
+                </div>
+
+                <div class="skill-box reveal">
+                    <div class="skill-icon"></div>
+                    <h3>Upcoming</h3>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2 class="section-title">QUESTS COMPLETED</h2>
+
+            <div class="projects">
+
+                <!--
+
+<div class="project-card reveal">
+<h3>FolioNet</h3>
+<p>
+An AI-powered collaboration platform where developers showcase projects, connect using skill matching, and build communities.
+</p>
+<div class="tags">
+<div class="tag">AI</div>
+<div class="tag">MongoDB</div>
+<div class="tag">Python</div>
+<div class="tag">Full Stack</div>
+</div>
+</div>
+
+-->
+
+                <div class="project-card reveal">
+                    <h3>Real-Time Chat App</h3>
+                    <p>
+                        Full-stack realtime chatting platform using Socket.io
+                        with live communication, room systems, and image
+                        sharing. Currently integrating an AI-powered LLM
+                        assistant for intelligent interactions and enhanced user
+                        experience.
+                    </p>
+                    <button class="project-btn"
+                        onclick="window.open('https://chat-room-1-pkfo.onrender.com/', '_blank')">GO</button>
+                    <div class="tags">
+                        <div class="tag">Socket.io</div>
+                        <div class="tag">Node.js</div>
+                        <div class="tag">Realtime</div>
+                        <div class="tag">Flask</div>
+                        <div class="tag">Python</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2 class="section-title">CONTACT PORTAL</h2>
+
+            <div class="contact-box reveal">
+
+                <input required type="text" id="name" placeholder="Your Name">
+                <input required type="email" id="email" placeholder="Email Address">
+                <textarea required rows="6" id="message" placeholder="Message"></textarea>
+
+                <button class="btn" onclick="send()">SEND MESSAGE</button>
+
+            </div>
+        </section>
+
+        
+
+        <footer>
+            PLAYER: ARSHDEEP SINGH — GAINING XP IN HARDCORE WORLD
+        </footer>
+
+        <script>
+
+// stars
+const starsContainer = document.querySelector('.stars');
+
+for(let i=0;i<120;i++){
+    const s = document.createElement('div');
+    s.classList.add('star');
+
+    s.style.left = Math.random()*100 + '%';
+    s.style.top = Math.random()*100 + '%';
+
+    s.style.animationDelay = Math.random()*5 + 's';
+
+    starsContainer.appendChild(s);
+}
+
+// reveal animations
+const reveals = document.querySelectorAll('.reveal');
+
+const observer = new IntersectionObserver(entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+entry.target.style.opacity='1';
+entry.target.style.transform='translateY(0px)';
+}
+
+});
+
+},{threshold:0.1});
+
+reveals.forEach(el=>{
+el.style.opacity='0';
+el.style.transform='translateY(80px)';
+el.style.transition='1s ease';
+observer.observe(el);
+});
+
+
+gsap.from('.hero h1',{
+    y:100,
+    opacity:0,
+    duration:1.4,
+    ease:'power4.out'
+});
+
+gsap.from('.hero p',{
+    y:40,
+    opacity:0,
+    duration:1.2,
+    delay:0.3
+});
+
+gsap.from('.btn',{
+    y:30,
+    opacity:100,
+    duration:1,
+    stagger:0.2,
+    delay:0.6
+});
+
+window.addEventListener('mousemove',(e)=>{
+
+const x = (window.innerWidth/2 - e.pageX)/40;
+const y = (window.innerHeight/2 - e.pageY)/40;
+
+const cubes = document.querySelectorAll('.floating-cube');
+
+cubes.forEach(cube=>{
+    cube.style.transform = `translate(${x}px,${y}px)`;
+});
+
+});
+
+function send(){
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+
+
+text = `name : ${name} email : ${email} message : ${message}`;
+window.open(`https://wa.me/916284066113?text=${text}`, '_blank');
+};
+</script>
+
+    </body>
+</html>
