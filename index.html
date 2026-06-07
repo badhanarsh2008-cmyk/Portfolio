@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arshdeep Singh — Portfolio</title>
+
+    <!--
+    ╔══════════════════════════════════════════════════════════╗
+    ║           ARSHDEEP SINGH — PORTFOLIO WEBSITE            ║
+    ║  Stack  : Pure HTML + CSS + Vanilla JS (no frameworks)  ║
+    ║  Fonts  : Instrument Serif (display) + Geist (body)     ║
+    ║  Colors : Warm charcoal bg + muted amber accent only    ║
+    ║  Sections: Hero · About · Skills · Projects · Contact   ║
+    ╚══════════════════════════════════════════════════════════╝
+  -->
+
+    <!-- Google Fonts — Instrument Serif for headings, Geist for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap"
+      rel="stylesheet" />
+
+    <style>
+
+    /* ================================================================
+       DESIGN TOKENS  —  EDIT COLORS / FONTS HERE ONLY
+       ================================================================
+       bg          : #111110  near-black warm charcoal background
+       surface     : #1a1a18  card / panel fill
+       surface-2   : #202020  slightly raised surface on hover
+       border      : #2a2a27  default subtle border
+       border-light: #3a3a36  hovered border
+       accent      : #c8a96e  muted warm amber — the ONE accent color
+       text-1      : #f0ede8  warm off-white — headings
+       text-2      : #888880  mid warm gray — body copy
+       text-3      : #4a4a46  dim gray — labels, captions
+       ================================================================ */
+    :root {
+      --bg:           #111110;
+      --surface:      #1a1a18;
+      --surface-2:    #202020;
+      --border:       #2a2a27;
+      --border-light: #3a3a36;
+
+      --accent:       #c8a96e;               /* amber — only accent color */
+      --accent-dim:   rgba(200,169,110,0.08);
+      --accent-glow:  rgba(200,169,110,0.18);
+
+      --text-1:   #f0ede8;   /* primary — headings */
+      --text-2:   #888880;   /* secondary — body */
+      --text-3:   #4a4a46;   /* muted — labels */
+
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-sans:  'Geist', 'Inter', system-ui, sans-serif;
+
+      --r-sm:  6px;
+      --r-md:  10px;
+      --r-lg:  16px;
+      --wrap:  1080px;   /* max container width — increase for wider layout */
+
+      /* Transition speeds — tweak to taste */
+      --t-fast: 0.18s ease;
+      --t-mid:  0.32s ease;
+      --t-slow: 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ================================================================
+       RESET & BASE
+       ================================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none; /* custom cursor enabled below */
+    }
+
+    /* Grain texture overlay — removes flat "generated" look */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
+    }
+
+    /* ================================================================
+       CUSTOM CURSOR
+       — #cursor-ring : outer amber ring, follows with lag
+       — #cursor-dot  : small dot, snaps to exact mouse position
+       — JS at bottom handles the animation loop
+       ================================================================ */
+    #cursor-ring {
+      position: fixed;
+      width: 30px; height: 30px;
+      border: 1px solid rgba(200,169,110,0.45);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+    }
+    #cursor-dot {
+      position: fixed;
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+    }
+    /* Ring grows when hovering clickable elements */
+    body:has(a:hover) #cursor-ring,
+    body:has(button:hover) #cursor-ring {
+      width: 46px; height: 46px;
+      border-color: rgba(200,169,110,0.75);
+    }
+
+    /* ================================================================
+       NAVIGATION
+       — Slides down on page load via animation
+       — Add/remove <li> in the HTML nav section to change links
+       ================================================================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 3.5rem;
+      background: rgba(17,17,16,0.82);
+      backdrop-filter: blur(20px) saturate(140%);
+      border-bottom: 1px solid var(--border);
+      transform: translateY(-100%);
+      animation: nav-drop 0.65s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+    }
+
+    @keyframes nav-drop {
+      to { transform: translateY(0); }
+    }
+
+    /* Logo — italic serif style */
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--text-1);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); } /* accent dot */
+
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-3);
+      text-decoration: none;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      transition: color var(--t-fast);
+    }
+    .nav-links a:hover { color: var(--text-1); }
+
+    /* ================================================================
+       LAYOUT UTILITIES
+       ================================================================ */
+    .container { max-width: var(--wrap); margin: 0 auto; padding: 0 2rem; }
+
+    /* Small uppercase label above section headings */
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Main serif italic heading style */
+    .h-main {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.15;
+      color: var(--text-1);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.9rem;
+    }
+
+    .sub-text {
+      font-size: 0.9rem;
+      color: var(--text-2);
+      line-height: 1.85;
+      max-width: 480px;
+    }
+
+    /* ================================================================
+       SCROLL REVEAL ANIMATION
+       — Add class="reveal" to any element
+       — JS IntersectionObserver adds .visible when scrolled in
+       — Control per-element delay with style="--delay: 0.1s"
+       ================================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--t-slow), transform var(--t-slow);
+      transition-delay: var(--delay, 0s);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ================================================================
+       HERO SECTION
+       ================================================================ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 7rem 0 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Very faint warm radial — barely visible, just adds depth */
+    .hero-warm {
+      position: absolute;
+      width: 480px; height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,169,110,0.045) 0%, transparent 65%);
+      top: 45%; left: 30%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: warmth-pulse 5s ease-in-out infinite;
+    }
+    @keyframes warmth-pulse {
+      0%, 100% { transform: translate(-50%,-50%) scale(1);    opacity: 1; }
+      50%       { transform: translate(-50%,-50%) scale(1.12); opacity: 0.65; }
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    /* "Available" indicator pill */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 2rem;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-2);
+      letter-spacing: 0.04em;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fade-up 0.5s ease 0.4s forwards;
+    }
+
+    /* Breathing green dot — not neon, just a muted #5a9a6a */
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #5a9a6a;
+      animation: dot-breathe 2.2s ease infinite;
+    }
+    @keyframes dot-breathe {
+      0%, 100% { opacity: 1;   transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.75); }
+    }
+
+    /* Name — large italic serif */
+    .hero-name {
+      font-family: var(--font-serif);
+      font-size: clamp(3.2rem, 7vw, 5.4rem);
+      font-weight: 400;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      color: var(--text-1);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fade-up 0.7s ease 0.6s forwards;
+    }
+    .hero-name em { font-style: italic; color: var(--accent); }
+
+    /* Subtitle with typing effect */
+    .hero-role {
+      font-size: 0.88rem;
+      color: var(--text-2);
+      margin-bottom: 1.4rem;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      animation: fade-up 0.6s ease 0.8s forwards;
+    }
+
+    /* Typed text span — caret blink via animation */
+    #typed {
+      color: var(--accent);
+      font-weight: 500;
+      border-right: 1.5px solid var(--accent);
+      padding-right: 2px;
+      animation: caret-blink 0.75s step-end infinite;
+    }
+    @keyframes caret-blink {
+      0%, 100% { border-color: var(--accent); }
+      50%       { border-color: transparent; }
+    }
+
+    .hero-desc {
+      font-size: 0.9rem;
+      color: var(--text-2);
+      line-height: 1.9;
+      max-width: 420px;
+      margin-bottom: 2.2rem;
+      opacity: 0;
+      animation: fade-up 0.6s ease 1s forwards;
+    }
+
+    /* CTA button row */
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      opacity: 0;
+      animation: fade-up 0.6s ease 1.2s forwards;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.7rem 1.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      font-weight: 500;
+      border-radius: var(--r-sm);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all var(--t-fast);
+      letter-spacing: 0.01em;
+    }
+
+    /* Filled amber button */
+    .btn-solid {
+      background: var(--accent);
+      color: #100f0a; /* dark text on amber */
+    }
+    .btn-solid:hover { background: #d4b87a; transform: translateY(-2px); }
+
+    /* Ghost / outline button */
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-2);
+      border: 1px solid var(--border-light);
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ── Hero floating card (right side) ──
+       Floats with a subtle idle animation.
+       Edit the info rows / tags in the HTML below.       */
+    .hero-card-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      animation: fade-in 1s ease 0.7s forwards;
+    }
+    @keyframes fade-in { to { opacity: 1; } }
+
+    .hero-card {
+      width: 285px;
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--r-lg);
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden;
+      /* Idle floating animation */
+      animation: card-float 7s ease-in-out infinite;
+    }
+    @keyframes card-float {
+      0%, 100% { transform: translateY(0px)   rotate(-0.8deg); }
+      33%       { transform: translateY(-10px) rotate(0.4deg);  }
+      66%       { transform: translateY(-5px)  rotate(-0.3deg); }
+    }
+
+    /* Amber top edge line */
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent) 50%, transparent);
+      opacity: 0.55;
+    }
+
+    .card-avatar {
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .card-name {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      color: var(--text-1);
+      margin-bottom: 0.2rem;
+    }
+    .card-role-sub {
+      font-size: 0.68rem;
+      color: var(--text-3);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .card-sep { height: 1px; background: var(--border); margin-bottom: 1.1rem; }
+
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.55rem;
+    }
+    .card-row-l {
+      font-size: 0.7rem;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .card-row-v {
+      font-size: 0.76rem;
+      font-weight: 500;
+      color: var(--text-2);
+    }
+
+    /* Skill tag pills inside card */
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 1rem; }
+    .card-tag {
+      font-size: 0.63rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.52rem;
+      border-radius: 3px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(200,169,110,0.2);
+      color: var(--accent);
+    }
+
+    /* Shared fade-up keyframe used by hero elements */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ================================================================
+       ABOUT SECTION
+       ================================================================ */
+    #about {
+      padding: 8rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      font-size: 0.94rem;
+      color: var(--text-2);
+      line-height: 1.92;
+      margin-bottom: 1.1rem;
+    }
+    .about-text strong { color: var(--text-1); font-weight: 500; }
+    .about-text .hi    { color: var(--accent); font-weight: 500; }
+
+    /* Stats grid — 2x2 separated by 1px borders */
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+    }
+
+    .stat-cell {
+      background: var(--surface);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: background var(--t-fast);
+    }
+    .stat-cell:hover { background: var(--surface-2); }
+
+    /* Big italic number — update in HTML */
+    .stat-num {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat-lbl {
+      font-size: 0.68rem;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ================================================================
+       SKILLS SECTION
+       — Each .skill-card: set --pct for bar fill, --d for delay
+       — .badge-learning adds the "Learning" tag (top-right)
+       ================================================================ */
+    #skills {
+      padding: 8rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .skills-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      margin-bottom: 3rem;
+    }
+
+    /* Auto-fitting grid — cards wrap at 145px minimum */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      padding: 1.6rem 1.1rem;
+      text-align: center;
+      position: relative;
+      cursor: default;
+      /* Stagger reveal with --d CSS variable */
+      opacity: 0;
+      transform: translateY(14px);
+      transition:
+        background   var(--t-fast),
+        opacity      0.5s ease var(--d, 0s),
+        transform    0.5s ease var(--d, 0s);
+    }
+    .skill-card.visible { opacity: 1; transform: translateY(0); }
+    .skill-card:hover   { background: var(--surface-2); }
+
+    .skill-icon {
+      font-size: 1.55rem;
+      display: block;
+      margin-bottom: 0.65rem;
+      transition: transform 0.2s ease;
+    }
+    .skill-card:hover .skill-icon { transform: scale(1.1) translateY(-2px); }
+
+    .skill-name  { font-size: 0.86rem; font-weight: 600; color: var(--text-1); margin-bottom: 0.2rem; }
+    .skill-level { font-size: 0.62rem; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.8rem; }
+
+    /* Thin fill bar — animated to --pct width after card becomes .visible */
+    .skill-bar  { width: 100%; height: 2px; background: rgba(255,255,255,0.05); border-radius: 1px; overflow: hidden; }
+    .skill-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0;
+      border-radius: 1px;
+      /* Width transition kicks in after the card is revealed */
+      transition: width 0.9s cubic-bezier(0.25, 1, 0.5, 1) 0.25s;
+    }
+    .skill-card.visible .skill-fill { width: var(--pct, 70%); }
+
+    /* Learning badge — top-right corner of card */
+    .badge-learning {
+      position: absolute;
+      top: 8px; right: 8px;
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.42rem;
+      border-radius: 3px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(200,169,110,0.25);
+      color: var(--accent);
+    }
+
+    /* ================================================================
+       PROJECTS SECTION
+       — List-style layout (editorial, not card grid)
+       — Each .project-row slides in from left on scroll reveal
+       — Accent bar appears on left edge on hover
+       ================================================================ */
+    #projects {
+      padding: 8rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .projects-header { margin-bottom: 3rem; }
+
+    /* Outer container — 1px gaps between rows via background */
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+    }
+
+    .project-row {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      padding: 2rem 2rem;
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      /* Slide-in from left on reveal */
+      opacity: 0;
+      transform: translateX(-18px);
+      transition:
+        background     var(--t-fast),
+        opacity        0.55s ease var(--d, 0s),
+        transform      0.55s ease var(--d, 0s);
+    }
+    .project-row.visible { opacity: 1; transform: translateX(0); }
+    .project-row:hover   { background: var(--surface-2); }
+
+    /* Left amber accent bar — scales up on hover */
+    .project-row::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.28s ease;
+    }
+    .project-row:hover::before { transform: scaleY(1); }
+
+    /* Index number — 01, 02, 03 */
+    .project-index {
+      font-family: var(--font-serif);
+      font-size: 0.72rem;
+      font-style: italic;
+      color: var(--text-3);
+      user-select: none;
+      align-self: start;
+      padding-top: 0.2rem;
+    }
+
+    .project-main { min-width: 0; }
+
+    .project-name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-1);
+      margin-bottom: 0.35rem;
+      transition: color var(--t-fast);
+    }
+    .project-row:hover .project-name { color: var(--accent); }
+
+    .project-desc {
+      font-size: 0.84rem;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Tech stack tags */
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .project-tag {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 0.18rem 0.52rem;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-light);
+      color: var(--text-3);
+    }
+
+    /* Right: badge + arrow */
+    .project-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .project-badge {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.6rem;
+      border-radius: 3px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(200,169,110,0.2);
+      color: var(--accent);
+    }
+
+    /* Arrow shifts right on hover */
+    .project-arrow {
+      color: var(--text-3);
+      transition: transform var(--t-fast), color var(--t-fast);
+    }
+    .project-row:hover .project-arrow { transform: translateX(5px); color: var(--accent); }
+
+    /* ================================================================
+       CONTACT SECTION
+       ================================================================ */
+    #contact {
+      padding: 8rem 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+    }
+
+    .contact-desc {
+      font-size: 0.9rem;
+      color: var(--text-2);
+      line-height: 1.88;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Social / contact link rows — slides right on hover */
+    .contact-links { display: flex; flex-direction: column; gap: 0.65rem; }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 0.88rem 1.1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      text-decoration: none;
+      color: var(--text-2);
+      font-size: 0.85rem;
+      transition: all var(--t-fast);
+    }
+    .contact-link:hover {
+      border-color: var(--border-light);
+      color: var(--text-1);
+      transform: translateX(5px);
+    }
+    .contact-link svg { width: 15px; height: 15px; color: var(--accent); flex-shrink: 0; }
+
+    /* Contact form fields */
+    .contact-form { display: flex; flex-direction: column; gap: 0.95rem; }
+
+    .field { display: flex; flex-direction: column; gap: 0.32rem; }
+    .field label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .field input, .field textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 0.72rem 0.95rem;
+      font-family: var(--font-sans);
+      font-size: 0.87rem;
+      color: var(--text-1);
+      outline: none;
+      resize: none;
+      transition: border-color var(--t-fast);
+    }
+    .field input::placeholder, .field textarea::placeholder { color: var(--text-3); }
+    .field input:focus, .field textarea:focus { border-color: var(--border-light); }
+
+    /* ================================================================
+       FOOTER
+       — Update year / name in HTML
+       ================================================================ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--text-3);
+      z-index: 1;
+      position: relative;
+    }
+    footer em { color: var(--accent); font-style: normal; }
+
+    /* ================================================================
+       RESPONSIVE — switches to single column at 768px
+       ================================================================ */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.3rem; }
+
+      .hero-grid    { grid-template-columns: 1fr; }
+      .hero-card-wrap { display: none; }   /* hide card on mobile */
+
+      .about-grid   { grid-template-columns: 1fr; gap: 3rem; }
+      .skills-top   { grid-template-columns: 1fr; gap: 1.5rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3.5rem; }
+
+      .project-row  { grid-template-columns: 28px 1fr; }
+      .project-meta { display: none; }    /* hide badge/arrow on small screens */
+
+      /* Restore default cursor on touch devices */
+      body          { cursor: auto; }
+      #cursor-ring, #cursor-dot { display: none; }
+    }
+
+  </style>
+  </head>
+  <body>
+
+    <!-- Custom cursor elements — positioned/animated via JS -->
+    <div id="cursor-ring"></div>
+    <div id="cursor-dot"></div>
+
+    <!-- ================================================================
+       NAVIGATION
+       — .nav-logo: your name / initials
+       — .nav-links: add or remove <li> items to change sections
+       ================================================================ -->
+    <nav>
+      <a href="#hero" class="nav-logo">Arshdeep<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- ================================================================
+       HERO SECTION
+       — Update: name, typed phrases array in JS, description
+       — Hero card: update info rows and card-tag pills
+       ================================================================ -->
+    <section id="hero">
+      <div class="hero-warm"></div>
+      <div class="container">
+        <div class="hero-grid">
+
+          <!-- Hero left — text content -->
+          <div>
+            <!-- Status pill — change text if no longer available -->
+            <div class="status-pill">
+              <span class="status-dot"></span>
+              If the Vision's Big.I'm In
+            </div>
+
+            <!-- Name — <em> applies italic + amber color -->
+            <h1 class="hero-name">Arshdeep<br><em>Singh.</em></h1>
+
+            <!-- Role with typing animation — phrases defined in JS below -->
+            <p class="hero-role">B.Tech CSE &nbsp;·&nbsp; SBBSU &nbsp;·&nbsp;
+              <span id="typed"></span></p>
+
+            <!-- 2-3 sentence description — keep concise -->
+            <p class="hero-desc">
+              I’m a second-year CS student who enjoys learning by building and
+              exploring new technologies.
+              I’m always curious about how things work, whether it’s software,
+              AI, or system design, and
+              I like challenging myself with new ideas and projects that help me
+              grow as a developer.
+            </p>
+
+            <!-- CTA buttons — update href to real URLs -->
+            <div class="hero-actions">
+              <a href="#projects" class="btn btn-solid">
+                See My Work
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5"><path
+                    d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </a>
+              <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+            </div>
+          </div>
+
+          <!-- Hero right — floating card -->
+          <div class="hero-card-wrap">
+            <div class="hero-card">
+              <!-- Initials avatar — update if name changes -->
+              <div class="card-avatar">AS</div>
+              <div class="card-name">Arshdeep Singh</div>
+              <div class="card-role-sub">B.Tech CSE · AI & ML</div>
+              <div class="card-sep"></div>
+              <!-- Info rows — add/remove .card-row divs as needed -->
+              <div class="card-row">
+                <span class="card-row-l">University</span>
+                <span class="card-row-v">SBBSU</span>
+              </div>
+              <div class="card-row">
+                <span class="card-row-l">Year</span>
+                <span class="card-row-v">2nd Year</span>
+              </div>
+              <div class="card-row">
+                <span class="card-row-l">Spec.</span>
+                <span class="card-row-v">AI & ML</span>
+              </div>
+              <div class="card-row">
+                <span class="card-row-l">Status</span>
+                <span class="card-row-v" style="color: #5a9a6a;">Building
+                  FolioNet</span>
+              </div>
+              <!-- Skill tags — add/remove .card-tag spans -->
+              <div class="card-tags">
+                <span class="card-tag">Python</span>
+                <span class="card-tag">SQL</span>
+                <span class="card-tag">GIT</span>
+                <span class="card-tag">MONGODB</span>
+                <span class="card-tag">C++</span>
+                <span class="card-tag">Render</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+       ABOUT SECTION
+       — Update the 3 paragraphs with your own words
+       — Update stat numbers in .stat-num spans
+       ================================================================ -->
+    <section id="about">
+      <div class="container">
+        <div class="about-grid">
+
+          <!-- Story — keep it honest and personal -->
+          <div class="about-text reveal" style="--delay: 0s;">
+            <span class="eyebrow">Who I Am</span>
+            <h2 class="h-main">I build things<br>that solve real problems.</h2>
+
+            <p>
+              I'm <strong>Arshdeep Singh</strong>, a second-year Computer
+              Science student at
+              Sant Baba Bhag Singh University, specializing in
+              <span class="hi">Artificial Intelligence and Machine
+                Learning</span>.
+              My foundation is solid — C, C++, data structures, algorithms — and
+              I've built
+              outward from there into full-stack development and AI-integrated
+              products.
+            </p>
+            <p>
+              My real-time chat app with <strong>Socket.io</strong> was born
+              from wanting to
+              understand how live systems actually work under the hood. <span
+                class="hi">FolioNet</span>
+              came from a frustration — there was no good place for developers
+              to showcase work,
+              find collaborators, and grow together meaningfully.
+            </p>
+            <p>
+              Currently learning <strong>Django</strong> while pushing AI
+              integrations in FolioNet.
+              I like working where systems thinking meets user-facing product
+              design —
+              that intersection is where the interesting problems live.
+            </p>
+          </div>
+
+          <!-- Stats — update numbers/labels freely -->
+          <div class="about-stats reveal" style="--delay: 0.14s;">
+            <div class="stat-cell">
+              <div class="stat-num">2+</div>
+              <div class="stat-lbl">Years Coding</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-num">7+</div>
+              <div class="stat-lbl">Technologies</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-num">3</div>
+              <div class="stat-lbl">Major Projects</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-num">∞</div>
+              <div class="stat-lbl">Still Learning</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+       SKILLS SECTION
+       — Copy a .skill-card block to add a new skill
+       — Set --pct: XX%  for how full the progress bar is
+       — Set --d: Xs     for stagger delay (increment by 0.05s)
+       — Add <span class="badge-learning"> for "Learning" tag
+       ================================================================ -->
+    <section id="skills">
+      <div class="container">
+
+        <div class="skills-top">
+          <div class="reveal" style="--delay: 0s;">
+            <span class="eyebrow">What I Use</span>
+            <h2 class="h-main">Skills &amp;<br>Technologies</h2>
+          </div>
+          <p class="sub-text reveal" style="--delay: 0.1s;">
+            From systems-level thinking in C/C++ to modern full-stack JavaScript
+            —
+            with Python and AI threading through everything I build.
+          </p>
+        </div>
+
+        <div class="skills-grid">
+
+          <!-- Python -->
+          <div class="skill-card" style="--pct: 88%; --d: 0s;">
+            <span class="skill-icon">🐍</span>
+            <div class="skill-name">Python</div>
+            <div class="skill-level">Proficient</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+
+          <!-- C -->
+          <div class="skill-card" style="--pct: 83%; --d: 0.05s;">
+            <span class="skill-icon">⚙️</span>
+            <div class="skill-name">C</div>
+            <div class="skill-level">Proficient</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+          
+          <!-- C++ -->
+          <div class="skill-card" style="--pct: 80%; --d: 0.1s;">
+            <span class="skill-icon">🔩</span>
+            <div class="skill-name">C++</div>
+            <div class="skill-level">Proficient</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+
+          <!-- HTML/CSS -->
+          <div class="skill-card" style="--pct: 83%; --d: 0.05s;">
+            <span class="skill-icon"> <\> </span>
+            <div class="skill-name">HTML/CSS</div>
+            <div class="skill-level">Proficient</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+
+          <!-- JavaScript -->
+          <div class="skill-card" style="--pct: 78%; --d: 0.15s;">
+            <span class="skill-icon">𝙅𝙎</span>
+            <div class="skill-name">JavaScript</div>
+            <div class="skill-level">Proficient</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+
+          <!-- SQL / DBMS -->
+          <div class="skill-card" style="--pct: 74%; --d: 0.2s;">
+            <span class="skill-icon">🗄️</span>
+            <div class="skill-name">SQL / DBMS</div>
+            <div class="skill-level">Intermediate</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+
+          <!-- MongoDB -->
+          <div class="skill-card" style="--pct: 70%; --d: 0.25s;">
+            <span class="skill-icon">🍃</span>
+            <div class="skill-name">MongoDB</div>
+            <div class="skill-level">Intermediate</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+
+          <!-- Django — currently learning, shows badge -->
+          <div class="skill-card" style="--pct: 42%; --d: 0.3s;">
+            <span class="badge-learning">Learning</span>
+            <span class="skill-icon">🎯</span>
+            <div class="skill-name">Django</div>
+            <div class="skill-level">In Progress</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+
+          <!--
+          TO ADD A NEW SKILL — copy this block and fill in:
+          <div class="skill-card" style="- -pct: 65%; - -d: 0.35s;">
+            <span class="skill-icon">🔥</span>
+            <div class="skill-name">React</div>
+            <div class="skill-level">Intermediate</div>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
+          </div>
+        -->
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+       PROJECTS SECTION
+       — Each project = one .project-row inside .projects-list
+       — Update: project-name, project-desc, project-tag spans
+       — Update: project-badge text, onclick URL
+       — Adjust --d for stagger timing (0s, 0.07s, 0.14s, ...)
+       ================================================================ -->
+    <section id="projects">
+      <div class="container">
+
+        <div class="projects-header reveal" style="--delay: 0s;">
+          <span class="eyebrow">What I've Built</span>
+          <h2 class="h-main">Projects</h2>
+          <p class="sub-text">Real problems, real solutions — not just
+            coursework demos.</p>
+        </div>
+
+        <div class="projects-list">
+
+          <!-- PROJECT 1: FolioNet -->
+          <!-- onclick="window.open('YOUR_GITHUB_URL', '_blank')" -->
+          <div class="project-row" style="--d: 0.05s;"
+            onclick="alert('Sorry!!...Working on it')">
+            <div class="project-index">01</div>
+
+            <div class="project-main">
+              <div class="project-name">FolioNet</div>
+              <p class="project-desc">
+                I realized that a lot of developers build amazing things, but
+                most of those projects never reach real users. Not because the
+                product is bad — people simply don’t know they exist. I’ve faced
+                this myself while building apps and experimenting with different
+                ideas.
+
+                That’s why I’m building FolioNet — a platform where developers
+                can showcase the tools, apps, and services they create, and let
+                other people actually discover and use them. The goal is to help
+                builders get visibility, connect with users, and turn side
+                projects into something real instead of letting them stay hidden
+                inside GitHub folders or local servers.
+              </p>
+              <!-- Add/remove .project-tag spans to update the stack -->
+              <div class="project-tags">
+                <span class="project-tag">AI / ML</span>
+                <span class="project-tag">Python</span>
+                <span class="project-tag">MongoDB</span>
+                <span class="project-tag">Skill Matching</span>
+                <span class="project-tag">Badge System</span>
+                <span class="project-tag">Social Feed</span>
+              </div>
+            </div>
+
+            <div class="project-meta">
+              <span class="project-badge">★ Main Project ( working on it )</span>
+              <svg class="project-arrow" width="18" height="18"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </div>
+          </div>
+
+          <!-- PROJECT 2: Real-Time Chat App -->
+          <div class="project-row" style="--d: 0.12s;"
+            onclick="window.open('https://chat-room-1-pkfo.onrender.com/', '_blank')">
+            <div class="project-index">02</div>
+
+            <div class="project-main">
+              <div class="project-name">Real-Time Chat App</div>
+              <p class="project-desc">
+                A fully functional full-stack web chatting application built
+                with Socket.io.
+                Supports live messaging, photos-sharing, chat rooms, and real-time user
+                presence. Built entirely
+                from scratch — frontend to backend — as a hands-on dive into
+                event-driven architecture.
+              </p>
+              <div class="project-tags">
+                <span class="project-tag">Socket.io</span>
+                <span class="project-tag">Node.js</span>
+                <span class="project-tag">JavaScript</span>
+                <span class="project-tag">HTML / CSS</span>
+                <span class="project-tag">Real-Time</span>
+              </div>
+            </div>
+
+            <div class="project-meta">
+              <span class="project-badge">Full Stack</span>
+              <svg class="project-arrow" width="18" height="18"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </div>
+          </div>
+
+          <div class="project-row" style="--d: 0.19s;"
+            onclick="window.open('https://ai-resume-analyzer-nn-3.onrender.com/', '_blank')">
+            <div class="project-index">03</div>
+            <div class="project-main">
+              <div class="project-name">Smart Resume Analyzer</div>
+              <p class="project-desc">It is a machine learning model, specifically a small custom
+                neural network built from scratch in Python.
+                It extracts text from resumes and scores them using a custom neural network.
+                It evaluates resume quality based on skills, education, action verbs,
+                contact details, measurable results, structure, and readability.
+              </p>
+              <div class="project-tags">
+                <span class="project-tag">Python</span>
+                <span class="project-tag">Flask</span>
+                <span class="project-tag">Neural Network</span>
+                <span class="project-tag">HTML / CSS</span>
+                <span class="project-tag">Pypdf</span>
+                <span class="project-tag">Pytesseract</span>
+              </div>
+            </div>
+            <div class="project-meta">
+              <span class="project-badge">Tool</span>
+              <svg class="project-arrow" width="18" height="18"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </div>
+          </div>
+
+          <!-- Placeholder row — remove/replace when next project is ready -->
+          <div class="project-row"
+            style="--d: 0.19s; opacity: 0.35 !important; pointer-events: none;">
+            <div class="project-index">04</div>
+            <div class="project-main">
+              <div class="project-name" style="color: var(--text-3);">Something
+                new is loading...</div>
+              <p class="project-desc">Next project in progress.</p>
+            </div>
+            <div class="project-meta">
+              <span class="project-badge" style="opacity:0.4;">Soon</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+       CONTACT SECTION
+       — Update all href attributes with real email / social URLs
+       — To make the form send real emails:
+           Option A: Use Formspree — formspree.io (free tier)
+           Option B: Use EmailJS  — emailjs.com  (free tier)
+           Wire up the "Send" button click in the JS section below
+       ================================================================ -->
+    <section id="contact">
+      <div class="container">
+        <div class="contact-grid">
+
+          <!-- Left: description + links -->
+          <div class="reveal" style="--delay: 0s;">
+            <span class="eyebrow">Let's Talk</span>
+            <h2 class="h-main">Get In Touch</h2>
+            <p class="contact-desc">
+              Whether it's a collaboration idea, an opportunity, or just a
+              conversation
+              about what you're building — feel free to reach out.
+              I'm usually quick to respond.
+            </p>
+
+            <div class="contact-links">
+
+              <!-- Update href="mailto:YOUR_REAL_EMAIL" -->
+              <a href="mailto:arshdeep@email.com" class="contact-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.5">
+                  <path
+                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                badhanarsh2008@gmail.com
+              </a>
+
+              <!-- Update href to your real GitHub profile URL -->
+              <a href="https://github.com/" target="_blank"
+                class="contact-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.5">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+                github.com/badhanarsh2008-cmyk
+              </a>
+
+              <!-- Update href to your LinkedIn profile URL -->
+              <a href="https://linkedin.com/" target="_blank"
+                class="contact-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.5">
+                  <path
+                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+                linkedin.com/in/arshdeepsingh
+              </a>
+
+            </div>
+          </div>
+
+          <!-- Right: contact form -->
+          <div class="contact-form reveal" style="--delay: 0.12s;">
+
+            <div class="field">
+              <label>Your Name</label>
+              <input id="name" type="text" placeholder="e.g. Priya Sharma" required />
+            </div>
+
+            <div class="field">
+              <label>Email Address</label>
+              <input id="email" type="email" placeholder="you@example.com" required/>
+            </div>
+
+            <div class="field">
+              <label>Message</label>
+              <textarea id="message" rows="5"
+                placeholder="What's on your mind?"></textarea>
+            </div>
+
+            <!-- Wire this button to Formspree or EmailJS for real email sending -->
+            <button onclick="send()" class="btn btn-solid"
+              style="width:100%; justify-content:center; font-size:0.86rem;">
+              Send Message
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5">
+                <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" />
+              </svg>
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Update year in footer if needed -->
+    <footer>
+      <p>Built by <em>Arshdeep Singh</em> &nbsp;·&nbsp; B.Tech CSE &nbsp;·&nbsp;
+        SBBSU &nbsp;·&nbsp; 2026</p>
+    </footer>
+
+    <!-- ================================================================
+       JAVASCRIPT
+       ================================================================ -->
+    <script>
+    function send(){
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      const phone = 6284066113;
+
+      messege = `Name : ${name},
+      Email : ${email},
+      Messege : ${message}`
+
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(messege)}`;
+
+    window.open(url, "_blank");
+    alert("Messege sent!!!!")
+    };
+
+
+
+    /* ────────────────────────────────────────────
+       1. TYPED TEXT ANIMATION
+       — Cycles through phrases[] array
+       — Update phrases[] to change what's typed
+       ──────────────────────────────────────────── */
+    (function initTyped() {
+      const el = document.getElementById('typed');
+
+      /* ↓ EDIT these phrases to change what cycles on hero */
+      const phrases = [
+        'AI & ML Developer',
+        'Full Stack Dev',
+        'Problem Solver',
+        'Python Enthusiast'
+      ];
+
+      const TYPE_SPEED   = 85;   /* ms per char when typing   */
+      const DELETE_SPEED = 42;   /* ms per char when deleting */
+      const PAUSE_AFTER  = 1900; /* ms pause after word done  */
+      const PAUSE_BEFORE = 270;  /* ms pause before next word */
+
+      let phraseIdx = 0, charIdx = 0, deleting = false;
+
+      function tick() {
+        const word = phrases[phraseIdx];
+        el.textContent = deleting ? word.slice(0, charIdx--) : word.slice(0, charIdx++);
+
+        let delay = deleting ? DELETE_SPEED : TYPE_SPEED;
+
+        if (!deleting && charIdx > word.length) {
+          deleting = true;
+          delay = PAUSE_AFTER;
+        } else if (deleting && charIdx < 0) {
+          deleting  = false;
+          phraseIdx = (phraseIdx + 1) % phrases.length;
+          charIdx   = 0;
+          delay     = PAUSE_BEFORE;
+        }
+
+        setTimeout(tick, delay);
+      }
+
+      tick();
+    })();
+
+
+    /* ────────────────────────────────────────────
+       2. SCROLL REVEAL — IntersectionObserver
+       — Watches .reveal, .skill-card, .project-row
+       — Adds .visible class when element scrolls in
+       — threshold: how much of element must be visible
+       ──────────────────────────────────────────── */
+    (function initReveal() {
+      const els = document.querySelectorAll('.reveal, .skill-card, .project-row');
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              io.unobserve(e.target); /* stop watching after reveal */
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -28px 0px' }
+      );
+
+      els.forEach(el => io.observe(el));
+    })();
+
+
+    /* ────────────────────────────────────────────
+       3. CUSTOM CURSOR
+       — #cursor-dot  : snaps to exact mouse position
+       — #cursor-ring : lerp-follows with slight lag
+       — lagAmt: lower = more lag, higher = tighter
+       ──────────────────────────────────────────── */
+    (function initCursor() {
+      const ring = document.getElementById('cursor-ring');
+      const dot  = document.getElementById('cursor-dot');
+
+      if (!ring || !dot) return; /* safety check */
+
+      let mx = 0, my = 0; /* actual mouse position */
+      let rx = 0, ry = 0; /* ring's smoothed position */
+      const lagAmt = 0.11; /* 0.08 = more lag, 0.18 = tighter */
+
+      document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        /* Dot tracks exactly */
+        dot.style.left = mx + 'px';
+        dot.style.top  = my + 'px';
+      });
+
+      /* Ring lerps toward mouse position each frame */
+      function raf() {
+        rx += (mx - rx) * lagAmt;
+        ry += (my - ry) * lagAmt;
+        ring.style.left = Math.round(rx) + 'px';
+        ring.style.top  = Math.round(ry) + 'px';
+        requestAnimationFrame(raf);
+      }
+      raf();
+
+      /* Fade out cursor when mouse leaves page */
+      document.addEventListener('mouseleave', () => {
+        ring.style.opacity = dot.style.opacity = '0';
+      });
+      document.addEventListener('mouseenter', () => {
+        ring.style.opacity = dot.style.opacity = '1';
+      });
+    })();
+
+
+    /* ────────────────────────────────────────────
+       4. NAV SCROLL CLASS
+       — Adds .scrolled to <nav> after 60px scroll
+       — Style nav.scrolled in CSS if you want
+         different look when user has scrolled down
+       ──────────────────────────────────────────── */
+    (function initNavScroll() {
+      const nav = document.querySelector('nav');
+      window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 60);
+      }, { passive: true });
+    })();
+
+  </script>
+
+  </body>
+</html>

@@ -1,0 +1,80 @@
+/* ── XP Bar Track ── */
+.xp-bar {
+    width: 100%;
+    height: 18px;
+    background: #000000;
+    border: none;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ── Base fill styles (shared) ── */
+.xp-fill,
+.xp-fillJ,
+.xp-fillAI,
+.xp-fillM,
+.xp-fillML {
+    height: 100%;
+    background: #80FF20;
+    position: relative;
+    overflow: hidden;
+}
+
+/* top highlight */
+.xp-fill::before,
+.xp-fillJ::before,
+.xp-fillAI::before,
+.xp-fillM::before,
+.xp-fillML::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: #C0FF60;
+}
+
+/* bottom shadow */
+.xp-fill::after,
+.xp-fillJ::after,
+.xp-fillAI::after,
+.xp-fillM::after,
+.xp-fillML::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: #3aa000;
+}
+
+/* ── Individual widths ── */
+.xp-fill   { animation: xp    3s ease-in-out infinite alternate; }
+.xp-fillJ  { animation: xpJ   3s ease-in-out infinite alternate; }
+.xp-fillAI { animation: xpAI  2s ease-in-out infinite alternate; }
+.xp-fillM  { animation: xpM   3s ease-in-out infinite alternate; }
+.xp-fillML { animation: xpML  3s ease-in-out infinite alternate; }
+
+@keyframes xp   { from { width: 88%; } to { width: 92%; } }
+@keyframes xpJ  { from { width: 60%; } to { width: 65%; } }
+@keyframes xpAI { from { width: 52%; } to { width: 57%; } }
+@keyframes xpM  { from { width: 63%; } to { width: 68%; } }
+@keyframes xpML { from { width: 78%; } to { width: 83%; } }
+
+/* ── Scan shimmer (add <span class="xp-scan"></span> inside each fill div) ── */
+.xp-scan {
+    position: absolute;
+    inset: 0;
+    width: 15%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.22),
+        transparent
+    );
+    animation: xpScan 2s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes xpScan {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(600%); }
+}
